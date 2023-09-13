@@ -1,4 +1,17 @@
-const { PeerServer } = require("peer");
-let port = 9000;
-if(process.env && process.env.PORT) port = process.env.PORT;
-const peerServer = PeerServer({ port, path: "/myapp" });
+const express = require("express");
+const { ExpressPeerServer } = require("peer");
+const app = express();
+
+app.enable("trust proxy");
+
+const PORT = process.env.PORT || 9000;
+const server = app.listen(PORT, () => {
+	console.log(`App listening on port ${PORT}`);
+	console.log("Press Ctrl+C to quit.");
+});
+
+const peerServer = ExpressPeerServer(server, {
+	path: "/",
+});
+
+app.use("/", peerServer);
