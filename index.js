@@ -1,3 +1,4 @@
 const { PeerServer } = require("peer");
-
-const peerServer = PeerServer({ port: 9000, path: "/myapp" });
+let port = 9000;
+if(process.env && process.env.PORT) port = process.env.PORT;
+const peerServer = PeerServer({ port, path: "/myapp" });
